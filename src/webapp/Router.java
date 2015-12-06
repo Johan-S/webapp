@@ -5,7 +5,6 @@ import httpserver.RequestHandler;
 import static httpserver.RequestHandler.*;
 import static httpserver.Responses.*;
 import static httpserver.Http.Method.*;
-import httpserver.Session;
 import java.io.File;
 import java.util.Map;
 import util.Json;
