@@ -19,10 +19,7 @@ import javax.imageio.ImageIO;
 import util.MultipartFormData;
 import static webapp.Router.UPLOADED_PUBLIC_PATH;
 
-/**
- *
- * @author Johan Strååt
- */
+
 public class Images {
 
   public static Response publicImageList(Request req) {

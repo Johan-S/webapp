@@ -27,10 +27,7 @@ import httpserver.SQLError;
 import java.security.SecureRandom;
 import util.Security;
 import util.Strings;
-/**
- *
- * @author Johan Strååt
- */
+
 public class Session {
   public final String sessionId;
   public final long accountId;

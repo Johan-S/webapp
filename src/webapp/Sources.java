@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.StringJoiner;
 import util.Strings;
 
-/**
- *
- * @author Johan Strååt
- */
+
 public class Sources {
   static final String JAVA_SOURCE = "src/";
   static List<String> getFileList(String path, File folder, List<String> part) {
