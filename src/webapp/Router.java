@@ -5,8 +5,16 @@ import httpserver.RequestHandler;
 import static httpserver.RequestHandler.*;
 import static httpserver.Responses.*;
 import static httpserver.Http.Method.*;
+import static httpserver.sql.SQLResponses.directUniqueSQL;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.Json;
 import util.Strings;
 
@@ -16,6 +24,17 @@ public class Router {
   
   static final String UPLOADED_PUBLIC_PATH = "uploaded_public_files/";
     
+  static byte[] readAll(String path) {
+    try(InputStream in = new FileInputStream(path)) {
+      byte[] b = new byte[1<<18];
+      int r = in.read(b);
+      return Arrays.copyOf(b, r);
+    } catch (Exception ex) {
+      Logger.getLogger(Router.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return null;
+  }
+  
   static RequestHandler get() {
     Aggregate.Builder ab = new Aggregate.Builder();
     ab.add(GET, "/me", req -> 
@@ -26,7 +45,13 @@ public class Router {
     ab.add(GET, "/java.*", req -> Sources.javaFileResponse(req));
     ab.add(GET, "/imagelist", req -> Images.publicImageList(req));
     ab.add(GET, "/.+", req -> respond(safeFile(WEB_PATH, req.path), Strings.toDate(req.headers.get("If-Modified-Since"))));
-    ab.add(GET, "/", req -> respond(new File("web/index.html"), Strings.toDate(req.headers.get("If-Modified-Since"))));
+    
+    final byte[] index = readAll("web/index.html");
+    
+    ab.add(GET, "/", req -> new RawResponse(index, "text/html"));
+    
+    
+    //ab.add(GET, "/", req -> respond(new File("web/index.html"), Strings.toDate(req.headers.get("If-Modified-Since"))));
     ab.add(POST, "/login", req -> {
       Map<String, Object> m;
       m = Json.parseObject.apply(Strings.iter(new String(req.data)));

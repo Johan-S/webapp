@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 package webapp;
-import httpserver.ConnectionPool;
-import httpserver.SQLError;
+import httpserver.sql.ConnectionPool;
+import httpserver.sql.SQLError;
 import java.security.SecureRandom;
 import util.Security;
 import util.Strings;

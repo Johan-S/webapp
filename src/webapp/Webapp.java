@@ -4,6 +4,7 @@
 package webapp;
 
 import httpserver.*;
+import httpserver.sql.ConnectionPool;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
