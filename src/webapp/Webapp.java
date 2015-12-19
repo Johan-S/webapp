@@ -5,12 +5,10 @@ package webapp;
 
 import httpserver.*;
 import httpserver.sql.ConnectionPool;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.NumberFormat;
-import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,24 +47,16 @@ public class Webapp {
     Logger.getGlobal().getParent().addHandler(fh2);
     
   }
-
+  
   public static void runServers() throws IOException {
-    Server s = Server.create();
+    int port = Integer.valueOf(System.getenv("PORT"));
+    Server s = Server.create(port);
     s.start(Router.get());
     System.out.println(vars());
   }
   
-  static Properties readProperties() throws FileNotFoundException, IOException {
-    Properties res = new Properties();
-    try(Reader r = new FileReader("config.properties")) {
-      res.load(r);
-    }
-    return res;
-  }
-
-  public static void main(String[] args) throws IOException {
-    Properties props = readProperties();
-    ConnectionPool.setUrl(props.getProperty("db"));
+  public static void main(String[] args) throws Exception {
+    Database.init();
     initLog();
     runServers();
   }
